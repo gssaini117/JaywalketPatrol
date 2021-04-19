@@ -12,15 +12,14 @@ class Play extends Phaser.Scene {
     }
 
     create() {        
-        // place tile sprite 
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
-        // green UI background
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
-        // white borders
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+        // road
+        this.add.rectangle(0, 0, game.config.width, game.config.height, 0x696969).setOrigin(0,0);
+        // grass
+        this.add.rectangle(0, 0, 2*borderUISize, game.config.height, 0x00FF00).setOrigin(0, 0);
+        this.add.rectangle(game.config.width - 2*borderUISize, 0, 2*borderUISize, game.config.height, 0x00FF00).setOrigin(0, 0);
+        // sidewalk
+        this.add.rectangle(2*borderUISize, 0, borderUISize, game.config.height, 0xAAAAAA).setOrigin(0, 0);
+        this.add.rectangle(game.config.width - 3*borderUISize, 0, borderUISize, game.config.height, 0xAAAAAA).setOrigin(0, 0);
 
         // add car1 (p1)
         this.car1 = new Car1(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
@@ -51,12 +50,36 @@ class Play extends Phaser.Scene {
         // initialize scores
         this.p1Score = 0;
         this.p2Score = 0;
-        // display score
-        let scoreConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+        // text configurations
+        let scoreConfig1 = {
+            fontFamily: 'Roboto',
+            fontSize: '30px',
+            backgroundColor: '#FF0000',
+            color: '#000000',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 120
+        }
+        let scoreConfig2 = {
+            fontFamily: 'Roboto',
+            fontSize: '30px',
+            backgroundColor: '#00FFFF',
+            color: '#000000',
+            align: 'center',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 120
+        }
+        let UIConfig = {
+            fontFamily: 'Roboto',
+            fontSize: '42px',
+            backgroundColor: '#696969',
+            color: '#FFFFFF',
             align: 'center',
             padding: {
                 top: 5,
@@ -64,17 +87,18 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
-        this.scoreRight = this.add.text(game.config.width - (borderUISize + borderPadding + 100), borderUISize + borderPadding*2, this.p2Score, scoreConfig);
+        this.scoreLeft = this.add.text(game.config.width/2 - (borderPadding + borderUISize)*1.5 - 120, game.config.height/2 + (borderUISize)*4, this.p1Score, scoreConfig1);
+        this.scoreRight = this.add.text(game.config.width/2 + (borderPadding + borderUISize)*1.5, game.config.height/2 - (borderUISize + borderPadding)*4, this.p2Score, scoreConfig2);
 
         // GAME OVER flag
         this.gameOver = false;
 
         // 60-second play clock
-        scoreConfig.fixedWidth = 0;
+        UIConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(60000, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 - 42, 'GAME OVER', UIConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2, 'Press Enter to Restart', UIConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 42, 'or Esc for Menu', UIConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
@@ -92,7 +116,6 @@ class Play extends Phaser.Scene {
         
         // core game loop
         if (!this.gameOver) {
-            this.starfield.tilePositionX -= 4;
             this.car1.update();
             this.car2.update();
             this.ped1.update();
@@ -101,7 +124,7 @@ class Play extends Phaser.Scene {
         }
 
         // check collisions
-        if(this.checkCollision(this.car1, this.ped2)) {
+        if (this.checkCollision(this.car1, this.ped2)) {
             this.car1.reset();
             this.carCrash1(this.ped2);
         }
@@ -113,7 +136,7 @@ class Play extends Phaser.Scene {
             this.car1.reset();
             this.carCrash1(this.ped1);
         }
-        if(this.checkCollision(this.car2, this.ped2)) {
+        if (this.checkCollision(this.car2, this.ped2)) {
             this.car2.reset();
             this.carCrash2(this.ped2);
         }
