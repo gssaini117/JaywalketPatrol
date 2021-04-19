@@ -1,7 +1,7 @@
 /* 
 JAYWALK-et PATROL
 Developed by Gurkirat Saini
-Completed: 4/19/20 after x hours
+Completed: 4/19/20 after 9 hours
 
 Points Breakdown:
 10 points - Pedestrian Running Animation
@@ -23,8 +23,6 @@ Points Breakdown:
 Note: The closest pedestrian is worth 10 points
       The farthest pedestrian is worth 50 points
       Hitting the pedestrian on the crosswalk costs 20 points
-
-Received No Help (you can tell by the art)
 */ 
 
 let config = {

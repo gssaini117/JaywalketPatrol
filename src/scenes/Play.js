@@ -10,6 +10,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('pedestrian', './assets/Pedestrian.png', {frameWidth: 16, frameHeight: 16, startFrame: 0, endFrame: 3});
         this.load.spritesheet('explosion1', './assets/Explosion1.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 9});
         this.load.spritesheet('explosion2', './assets/Explosion2.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 9});
+        this.load.audio('ost', './assets/NotOnMyWatch.wav');
     }
 
     create() {        
@@ -107,6 +108,8 @@ class Play extends Phaser.Scene {
 
         // GAME OVER flag
         this.gameOver = false;
+
+        this.sound.play('ost');
 
         // 60-second play clock
         UIConfig.fixedWidth = 0;
