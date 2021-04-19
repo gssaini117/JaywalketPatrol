@@ -38,10 +38,10 @@ class Play extends Phaser.Scene {
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
-        // add pedestrians (x3)
-        this.ped1 = new Pedestrian(this, game.config.width + borderUISize*6, game.config.height/2 + borderUISize-16, 'spaceship', 0, 50, 10).setOrigin(0, 0);
-        this.pedNeg = new Pedestrian(this, game.config.width + borderUISize*3, game.config.height/2-16, 'spaceship', 0, -20, -20).setOrigin(0,0);
-        this.ped2 = new Pedestrian(this, game.config.width, game.config.height/2 - borderUISize-16, 'spaceship', 0, 10, 50).setOrigin(0,0);
+        // add pedestrians (x3) + rng
+        this.ped1 = new Pedestrian(this, game.config.width + borderUISize*6, game.config.height/2 + borderUISize-16, 'spaceship', 0, Math.random()*100, 50, 10).setOrigin(0, 0);
+        this.pedNeg = new Pedestrian(this, game.config.width + borderUISize*4, game.config.height/2-16, 'spaceship', 0, Math.random()*100, -20, -20).setOrigin(0,0);
+        this.ped2 = new Pedestrian(this, game.config.width + borderUISize*2, game.config.height/2 - borderUISize-16, 'spaceship', 0, Math.random()*100, 10, 50).setOrigin(0,0);
 
         // animation config
         this.anims.create({
