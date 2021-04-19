@@ -194,7 +194,7 @@ class Play extends Phaser.Scene {
         // score add and repaint
         this.p1Score += pedestrian.points1;
         this.scoreLeft.text = this.p1Score;  
-        this.sound.play('sfx_explosion');
+        this.generateSounds();
     }
 
     carCrash2(pedestrian, car) {
@@ -211,6 +211,27 @@ class Play extends Phaser.Scene {
         // score add and repaint
         this.p2Score += pedestrian.points2;
         this.scoreRight.text = this.p2Score;  
-        this.sound.play('sfx_explosion');
+        this.generateSounds();
+    }
+
+    generateSounds() { //suffer
+        let crash = Math.random() * 100;
+        let scream = Math.random() * 100;
+
+        if (crash >= 75) 
+            this.sound.play('sfx_crash1');
+        else if (crash >= 50)
+            this.sound.play('sfx_crash2');
+        else if (crash >= 25)
+            this.sound.play('sfx_crash3');
+        else
+            this.sound.play('sfx_crash4');
+
+        if (scream >= 66)
+            this.sound.play('sfx_scream1');
+        else if (scream >= 33)
+            this.sound.play('sfx_scream2');
+        else 
+            this.sound.play('sfx_scream3');
     }
 }

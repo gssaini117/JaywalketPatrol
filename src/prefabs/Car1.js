@@ -7,7 +7,7 @@ class Car1 extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.isFiring = false;
         this.moveSpeed = 2;
-        this.sfxRocket = scene.sound.add('sfx_rocket'); // add car sfx
+        this.sfxRocket = scene.sound.add('sfx_drive'); // add car sfx
     }
 
     update() {
