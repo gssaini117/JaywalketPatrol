@@ -12,11 +12,10 @@ class Menu extends Phaser.Scene {
 
     create() {
         let menuConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'right',
+            fontFamily: 'Roboto',
+            fontSize: '64px',
+            color: '#696969',
+            align: 'center',
             padding: {
                 top: 5,
                 bottom: 5,
@@ -25,11 +24,15 @@ class Menu extends Phaser.Scene {
         }
 
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'Use ← → arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'JAYWALK-et PATROL', menuConfig).setOrigin(0.5);
+        menuConfig.fontSize = '28px';
+        menuConfig.color = '#FF0000';
+        this.add.text(game.config.width/2, game.config.height/2, 'P1: (A) and (D) to move & (W) to fire', menuConfig).setOrigin(0.5);
+        menuConfig.color = '#00FFFF';
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'P2: (←) and (→) to move & (↑) to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + 2*(borderUISize + borderPadding), 'Press Enter to Begin!', menuConfig).setOrigin(0.5);
 
         // define keys
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
