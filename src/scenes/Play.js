@@ -60,9 +60,7 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('pedestrian', {start: 0, end: 3, first: 0}),
             framerate: 20,
             repeat: true
-        })
-        
-
+        }) 
 
         // initialize scores
         this.p1Score = 0;
