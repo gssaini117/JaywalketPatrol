@@ -23,7 +23,9 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
 
         // add car1 (p1)
-        this.p1Rocket = new Car1(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+        this.car1 = new Car1(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+        // add car2 (p2)
+        this.car2 = new Car2(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
         // define keys
         keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -35,26 +37,27 @@ class Play extends Phaser.Scene {
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         // add pedestrians (x3)
-        this.ship01 = new Pedestrian(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
-        this.ship02 = new Pedestrian(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
-        this.ship03 = new Pedestrian(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
+        this.ped1 = new Pedestrian(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 50, 10).setOrigin(0, 0);
+        this.pedNeg = new Pedestrian(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, -20, -20).setOrigin(0,0);
+        this.ped2 = new Pedestrian(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10, 50).setOrigin(0,0);
 
         // animation config
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
+            frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
             frameRate: 30
         });
 
-        // initialize score
+        // initialize scores
         this.p1Score = 0;
+        this.p2Score = 0;
         // display score
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
-            align: 'right',
+            align: 'center',
             padding: {
                 top: 5,
                 bottom: 5,
@@ -62,6 +65,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        this.scoreRight = this.add.text(game.config.width - (borderUISize + borderPadding + 100), borderUISize + borderPadding*2, this.p2Score, scoreConfig);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -89,53 +93,83 @@ class Play extends Phaser.Scene {
         // core game loop
         if (!this.gameOver) {
             this.starfield.tilePositionX -= 4;
-            this.p1Rocket.update();
-            this.ship01.update();
-            this.ship02.update();
-            this.ship03.update();
+            this.car1.update();
+            this.car2.update();
+            this.ped1.update();
+            this.pedNeg.update();
+            this.ped2.update();
         }
 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship03);
+        if(this.checkCollision(this.car1, this.ped2)) {
+            this.car1.reset();
+            this.carCrash1(this.ped2);
         }
-        if (this.checkCollision(this.p1Rocket, this.ship02)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship02);
+        if (this.checkCollision(this.car1, this.pedNeg)) {
+            this.car1.reset();
+            this.carCrash1(this.pedNeg);
         }
-        if (this.checkCollision(this.p1Rocket, this.ship01)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
+        if (this.checkCollision(this.car1, this.ped1)) {
+            this.car1.reset();
+            this.carCrash1(this.ped1);
+        }
+        if(this.checkCollision(this.car2, this.ped2)) {
+            this.car2.reset();
+            this.carCrash2(this.ped2);
+        }
+        if (this.checkCollision(this.car2, this.pedNeg)) {
+            this.car2.reset();
+            this.carCrash2(this.pedNeg);
+        }
+        if (this.checkCollision(this.car2, this.ped1)) {
+            this.car2.reset();
+            this.carCrash2(this.ped1);
         }
     }
 
-    checkCollision(rocket, ship) {
+    checkCollision(car, pedestrian) {
         // simple AABB checking
-        if (rocket.x < ship.x + ship.width && 
-            rocket.x + rocket.width > ship.x && 
-            rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship. y) {
+        if (car.x < pedestrian.x + pedestrian.width && 
+            car.x + car.width > pedestrian.x && 
+            car.y < pedestrian.y + pedestrian.height &&
+            car.height + car.y > pedestrian. y) {
                 return true;
         } else {
             return false;
         }
     }
 
-    shipExplode(ship) {
-        // temporarily hide ship
-        ship.alpha = 0;
-        // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');             // play explode animation
+    carCrash1(pedestrian) {
+        // temporarily hide ped
+        pedestrian.alpha = 0;
+        // create crash sprite at ped's position
+        let boom = this.add.sprite(pedestrian.x, pedestrian.y, 'explosion').setOrigin(0, 0);
+        boom.anims.play('explode');             // play crash animation
         boom.on('animationcomplete', () => {    // callback after anim completes
-          ship.reset();                         // reset ship position
-          ship.alpha = 1;                       // make ship visible again
-          boom.destroy();                       // remove explosion sprite
+          pedestrian.reset();                         // reset ped position
+          pedestrian.alpha = 1;                       // make ped visible again
+          boom.destroy();                       // remove crash sprite
         });     
         // score add and repaint
-        this.p1Score += ship.points;
+        this.p1Score += pedestrian.points1;
         this.scoreLeft.text = this.p1Score;  
+        this.sound.play('sfx_explosion');
+    }
+
+    carCrash2(pedestrian) {
+        // temporarily hide ped
+        pedestrian.alpha = 0;
+        // create crash sprite at ped's position
+        let boom = this.add.sprite(pedestrian.x, pedestrian.y, 'explosion').setOrigin(0, 0);
+        boom.anims.play('explode');             // play crash animation
+        boom.on('animationcomplete', () => {    // callback after anim completes
+          pedestrian.reset();                         // reset ped position
+          pedestrian.alpha = 1;                       // make ped visible again
+          boom.destroy();                       // remove crash sprite
+        });     
+        // score add and repaint
+        this.p2Score += pedestrian.points2;
+        this.scoreRight.text = this.p2Score;  
         this.sound.play('sfx_explosion');
     }
 }
