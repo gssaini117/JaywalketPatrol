@@ -214,7 +214,7 @@ class Play extends Phaser.Scene {
         this.generateSounds();
     }
 
-    generateSounds() { //suffer
+    generateSounds() { 
         let crash = Math.random() * 100;
         let scream = Math.random() * 100;
 
@@ -226,12 +226,5 @@ class Play extends Phaser.Scene {
             this.sound.play('sfx_crash3');
         else
             this.sound.play('sfx_crash4');
-
-        if (scream >= 66)
-            this.sound.play('sfx_scream1');
-        else if (scream >= 33)
-            this.sound.play('sfx_scream2');
-        else 
-            this.sound.play('sfx_scream3');
     }
 }

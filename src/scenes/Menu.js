@@ -5,15 +5,12 @@ class Menu extends Phaser.Scene {
 
     preload() {
         // load audio
-        this.load.audio('sfx_start', './assets/start.wav');
-        this.load.audio('sfx_drive', './assets/drive.wav');
-        this.load.audio('sfx_crash1', './assets/crash1.wav');
-        this.load.audio('sfx_crash2', './assets/crash2.wav');
-        this.load.audio('sfx_crash3', './assets/crash3.wav');
-        this.load.audio('sfx_crash4', './assets/crash4.wav');
-        this.load.audio('sfx_scream1', './assets/scream1.wav');
-        this.load.audio('sfx_scream2', './assets/scream2.wav');
-        this.load.audio('sfx_scream3', './assets/scream3.wav');
+        this.load.audio('sfx_start', './assets/start.mp3');
+        this.load.audio('sfx_drive', './assets/drive.mp3');
+        this.load.audio('sfx_crash1', './assets/crash1.mp3');
+        this.load.audio('sfx_crash2', './assets/crash2.mp3');
+        this.load.audio('sfx_crash3', './assets/crash3.mp3');
+        this.load.audio('sfx_crash4', './assets/crash4.mp3');
       }
 
     create() {
