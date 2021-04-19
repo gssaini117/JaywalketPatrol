@@ -4,8 +4,7 @@ Developed by Gurkirat Saini
 Completed: 4/19/20 after x Hours
 
 Points Breakdown:
-05 points - Randomizing Pedestrian Movement
-05 points - Added my own Music to the Play Scene
+10 points - Pedestrian Running Animation
 30 points - Simultaneous 2-player Mode
             > Functional Controls 
             > Separate Score Tracking
@@ -16,8 +15,15 @@ Points Breakdown:
             > Reorganized/Recolored the User Interface
             > Modified Controls for Players
             > Different Sound Effects
+(just in case the 10-point mod double-dips somehow)
+05 points - Randomizing Pedestrian Movement
+05 points - Added my own Music to the Play Scene
 
-Received No Help (you can tell cuz i suck at pixel art)
+Note: The closest pedestrian is worth 10 points
+      The farthest pedestrian is worth 50 points
+      Hitting the pedestrian on the crosswalk costs 20 points
+
+Received No Help (you can tell by the art)
 */ 
 
 let config = {
@@ -34,6 +40,6 @@ let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 
 // reserve keyboard vars
-let keyW, keyA, keyD;           // player 1 controls
+let keyS, keyA, keyD;           // player 1 controls
 let keyUP, keyLEFT, keyRIGHT;   // player 2 controls
 let keyENTER, keyESC;           // game setting

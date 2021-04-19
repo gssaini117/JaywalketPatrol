@@ -24,10 +24,10 @@ class Menu extends Phaser.Scene {
         }
 
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'JAYWALK-et PATROL', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding - 16, 'JAYWALK-et PATROL', menuConfig).setOrigin(0.5);
         menuConfig.fontSize = '28px';
         menuConfig.color = '#FF0000';
-        this.add.text(game.config.width/2, game.config.height/2, 'P1: (A) and (D) to move & (W) to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2, 'P1: (A) and (D) to move & (S) to fire', menuConfig).setOrigin(0.5);
         menuConfig.color = '#00FFFF';
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'P2: (←) and (→) to move & (↑) to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';

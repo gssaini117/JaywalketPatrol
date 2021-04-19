@@ -13,33 +13,33 @@ class Car1 extends Phaser.GameObjects.Sprite {
     update() {
         // left/right movement
         if(!this.isFiring) {
-            if(keyA.isDown && this.x >= borderUISize + this.width) {
+            if (keyA.isDown && this.x >= borderUISize*3 + this.width) {
                 this.x -= this.moveSpeed;
-            } else if (keyD.isDown && this.x <= game.config.width - borderUISize - this.width) {
+            } else if (keyD.isDown && this.x <= game.config.width/2 - borderPadding - this.width) {
                 this.x += this.moveSpeed;
             }
         }
 
         // fire button
-        if(Phaser.Input.Keyboard.JustDown(keyW) && !this.isFiring) {
+        if(Phaser.Input.Keyboard.JustDown(keyS) && !this.isFiring) {
             this.isFiring = true;
             this.sfxRocket.play(); // play sfx
         }
 
-        // if fired, move up
-        if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
-            this.y -= this.moveSpeed;
+        // if fired, move down
+        if(this.isFiring) {
+            this.y += this.moveSpeed;
         }
 
         // reset on miss
-        if(this.y <= borderUISize * 3 + borderPadding) {
+        if(this.y >= game.config.height - (borderUISize * 3 + borderPadding)) {
             this.isFiring = false;
-            this.y = game.config.height - borderUISize - borderPadding;
+            this.y = borderUISize + borderPadding;
         }
     }
 
     reset() { // resets car
         this.isFiring = false;
-        this.y = game.config.height - borderUISize - borderPadding;
+        this.y = borderUISize + borderPadding;
     }
 }

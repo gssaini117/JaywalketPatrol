@@ -14,6 +14,9 @@ class Play extends Phaser.Scene {
     create() {        
         // road
         this.add.rectangle(0, 0, game.config.width, game.config.height, 0x696969).setOrigin(0,0);
+        this.add.rectangle(game.config.width/2 - borderPadding*.4, 0, borderPadding*.8, game.config.height, 0xFEDC00).setOrigin(0, 0);
+        // crosswalk
+        this.add.rectangle(0, game.config.height/2 - borderUISize*.4, game.config.width, borderUISize*.8, 0xFFFFFF).setOrigin(0, 0);
         // grass
         this.add.rectangle(0, 0, 2*borderUISize, game.config.height, 0x00FF00).setOrigin(0, 0);
         this.add.rectangle(game.config.width - 2*borderUISize, 0, 2*borderUISize, game.config.height, 0x00FF00).setOrigin(0, 0);
@@ -22,11 +25,11 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - 3*borderUISize, 0, borderUISize, game.config.height, 0xAAAAAA).setOrigin(0, 0);
 
         // add car1 (p1)
-        this.car1 = new Car1(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+        this.car1 = new Car1(this, game.config.width/2 - borderUISize*3.5, borderUISize + borderPadding, 'rocket').setOrigin(0.5, 0);
         // add car2 (p2)
-        this.car2 = new Car2(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+        this.car2 = new Car2(this, game.config.width/2 + borderUISize*3.5, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
         // define keys
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -36,9 +39,9 @@ class Play extends Phaser.Scene {
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         // add pedestrians (x3)
-        this.ped1 = new Pedestrian(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 50, 10).setOrigin(0, 0);
-        this.pedNeg = new Pedestrian(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, -20, -20).setOrigin(0,0);
-        this.ped2 = new Pedestrian(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10, 50).setOrigin(0,0);
+        this.ped1 = new Pedestrian(this, game.config.width + borderUISize*6, game.config.height/2 + borderUISize-16, 'spaceship', 0, 50, 10).setOrigin(0, 0);
+        this.pedNeg = new Pedestrian(this, game.config.width + borderUISize*3, game.config.height/2-16, 'spaceship', 0, -20, -20).setOrigin(0,0);
+        this.ped2 = new Pedestrian(this, game.config.width, game.config.height/2 - borderUISize-16, 'spaceship', 0, 10, 50).setOrigin(0,0);
 
         // animation config
         this.anims.create({
