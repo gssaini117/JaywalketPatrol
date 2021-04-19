@@ -1,7 +1,7 @@
 /* 
 JAYWALK-et PATROL
 Developed by Gurkirat Saini
-Completed: 4/19/20 after x Hours
+Completed: 4/19/20 after x hours
 
 Points Breakdown:
 10 points - Pedestrian Running Animation
@@ -18,6 +18,7 @@ Points Breakdown:
 (just in case the 10-point mod double-dips somehow)
 05 points - Randomizing Pedestrian Movement
 05 points - Added my own Music to the Play Scene
+10 points - Randomize 4 crash sound effects
 
 Note: The closest pedestrian is worth 10 points
       The farthest pedestrian is worth 50 points
