@@ -32,14 +32,14 @@ class Car1 extends Phaser.GameObjects.Sprite {
         }
 
         // reset on miss
-        if(this.y >= game.config.height - (borderUISize * 3 + borderPadding)) {
+        if(this.y >= game.config.height - (borderUISize * 3 + borderPadding)-64) {
             this.isFiring = false;
-            this.y = borderUISize + borderPadding;
+            this.y = borderUISize + borderPadding - 64;
         }
     }
 
     reset() { // resets car
         this.isFiring = false;
-        this.y = borderUISize + borderPadding;
+        this.y = borderUISize + borderPadding - 64;
     }
 }

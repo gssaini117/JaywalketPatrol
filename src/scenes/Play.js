@@ -5,10 +5,11 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images/tile sprites
-        this.load.image('rocket', './assets/rocket.png');
-        this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.image('car1', './assets/Car1.png');
+        this.load.image('car2', './assets/Car2.png');
+        this.load.spritesheet('pedestrian', './assets/Pedestrian.png', {frameWidth: 16, frameHeight: 16, startFrame: 0, endFrame: 3});
+        this.load.spritesheet('explosion1', './assets/Explosion1.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('explosion2', './assets/Explosion2.png', {frameWidth: 32, frameHeight: 64, startFrame: 0, endFrame: 9});
     }
 
     create() {        
@@ -25,9 +26,9 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - 3*borderUISize, 0, borderUISize, game.config.height, 0xAAAAAA).setOrigin(0, 0);
 
         // add car1 (p1)
-        this.car1 = new Car1(this, game.config.width/2 - borderUISize*3.5, borderUISize + borderPadding, 'rocket').setOrigin(0.5, 0);
+        this.car1 = new Car1(this, game.config.width/2 - borderUISize*3.5, borderUISize + borderPadding - 64, 'car1').setOrigin(0.5, 0);
         // add car2 (p2)
-        this.car2 = new Car2(this, game.config.width/2 + borderUISize*3.5, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+        this.car2 = new Car2(this, game.config.width/2 + borderUISize*3.5, game.config.height - borderUISize - borderPadding, 'car2').setOrigin(0.5, 0);
         // define keys
         keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -39,16 +40,29 @@ class Play extends Phaser.Scene {
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
         // add pedestrians (x3) + rng
-        this.ped1 = new Pedestrian(this, game.config.width + borderUISize*6, game.config.height/2 + borderUISize-16, 'spaceship', 0, Math.random()*100, 50, 10).setOrigin(0, 0);
-        this.pedNeg = new Pedestrian(this, game.config.width + borderUISize*4, game.config.height/2-16, 'spaceship', 0, Math.random()*100, -20, -20).setOrigin(0,0);
-        this.ped2 = new Pedestrian(this, game.config.width + borderUISize*2, game.config.height/2 - borderUISize-16, 'spaceship', 0, Math.random()*100, 10, 50).setOrigin(0,0);
+        this.ped1 = new Pedestrian(this, game.config.width, game.config.height/2 + borderUISize-8, 'pedestrian', 0, Math.random()*100, 50, 10).setOrigin(0, 0);
+        this.pedNeg = new Pedestrian(this, game.config.width, game.config.height/2-8, 'pedestrian', 0, Math.random()*100, -20, -20).setOrigin(0,0);
+        this.ped2 = new Pedestrian(this, game.config.width, game.config.height/2 - borderUISize-8, 'pedestrian', 0, Math.random()*100, 10, 50).setOrigin(0,0);
 
-        // animation config
+        // animations config
         this.anims.create({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
-            frameRate: 30
+            key: 'explode1',
+            frames: this.anims.generateFrameNumbers('explosion1', {start: 0, end: 9, first: 0}),
+            frameRate: 16
         });
+        this.anims.create({
+            key: 'explode2',
+            frames: this.anims.generateFrameNumbers('explosion2', {start: 0, end: 9, first: 0}),
+            frameRate: 16
+        });
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('pedestrian', {start: 0, end: 3, first: 0}),
+            framerate: 20,
+            repeat: true
+        })
+        
+
 
         // initialize scores
         this.p1Score = 0;
@@ -124,32 +138,35 @@ class Play extends Phaser.Scene {
             this.ped1.update();
             this.pedNeg.update();
             this.ped2.update();
+            this.ped1.anims.play('walk', true);
+            this.ped2.anims.play('walk', true);
+            this.pedNeg.anims.play('walk', true);
         }
 
         // check collisions
         if (this.checkCollision(this.car1, this.ped2)) {
+            this.carCrash1(this.ped2, this.car1);
             this.car1.reset();
-            this.carCrash1(this.ped2);
         }
         if (this.checkCollision(this.car1, this.pedNeg)) {
+            this.carCrash1(this.pedNeg, this.car1);
             this.car1.reset();
-            this.carCrash1(this.pedNeg);
         }
         if (this.checkCollision(this.car1, this.ped1)) {
+            this.carCrash1(this.ped1, this.car1);
             this.car1.reset();
-            this.carCrash1(this.ped1);
         }
         if (this.checkCollision(this.car2, this.ped2)) {
+            this.carCrash2(this.ped2, this.car2);
             this.car2.reset();
-            this.carCrash2(this.ped2);
         }
         if (this.checkCollision(this.car2, this.pedNeg)) {
+            this.carCrash2(this.pedNeg, this.car2);
             this.car2.reset();
-            this.carCrash2(this.pedNeg);
         }
         if (this.checkCollision(this.car2, this.ped1)) {
+            this.carCrash2(this.ped1, this.car2);
             this.car2.reset();
-            this.carCrash2(this.ped1);
         }
     }
 
@@ -165,12 +182,12 @@ class Play extends Phaser.Scene {
         }
     }
 
-    carCrash1(pedestrian) {
+    carCrash1(pedestrian, car) {
         // temporarily hide ped
         pedestrian.alpha = 0;
         // create crash sprite at ped's position
-        let boom = this.add.sprite(pedestrian.x, pedestrian.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');             // play crash animation
+        let boom = this.add.sprite(car.x-16, car.y, 'explosion1').setOrigin(0, 0);
+        boom.anims.play('explode1');             // play crash animation
         boom.on('animationcomplete', () => {    // callback after anim completes
           pedestrian.reset();                         // reset ped position
           pedestrian.alpha = 1;                       // make ped visible again
@@ -182,12 +199,12 @@ class Play extends Phaser.Scene {
         this.sound.play('sfx_explosion');
     }
 
-    carCrash2(pedestrian) {
+    carCrash2(pedestrian, car) {
         // temporarily hide ped
         pedestrian.alpha = 0;
         // create crash sprite at ped's position
-        let boom = this.add.sprite(pedestrian.x, pedestrian.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');             // play crash animation
+        let boom = this.add.sprite(car.x-16, car.y, 'explosion2').setOrigin(0, 0);
+        boom.anims.play('explode2');             // play crash animation
         boom.on('animationcomplete', () => {    // callback after anim completes
           pedestrian.reset();                         // reset ped position
           pedestrian.alpha = 1;                       // make ped visible again

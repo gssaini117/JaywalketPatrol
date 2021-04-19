@@ -1,11 +1,11 @@
-// Spaceship prefab
+// Pedestrian prefab
 class Pedestrian extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame, dir, pointValue1, pointValue2) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
         this.points1 = pointValue1;
         this.points2 = pointValue2;
-        this.moveSpeed = 3;
+        this.moveSpeed = 2;
         if (dir >= 50)
             this.direction = true;
         else
